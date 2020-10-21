@@ -16,12 +16,11 @@ import spacy
 from geopy.geocoders import Nominatim
 # import logging
 
-from utilities import log, cursor, args, sites
-import config
+from utilities import log, args, sites
+from dbconfig import db, Article, Place
 
 class Scraper:
     _instance = None
-    cfg = config.cfg
     driver = None
     site = None
     number = 0
@@ -48,49 +47,51 @@ class Scraper:
     def __exit__(self, exception_type, exception_value, traceback):
         self.driver.quit()
 
-    def test_run(self):
-        with self.driver as driver:
-            driver.get("http://www.google.com")
-            print(driver.current_url)
-
-    def test_dbconn(self):
-        with cursor(self.cfg) as c:
-            c.execute("SHOW TABLES;")
-            print(list(x[0] for x in c.fetchall()))
-            c.execute("DESC articles;")
-            print(list(" ".join(str(y) for y in x) for x in c.fetchall()))
-
     def scrape_article(self, link):
         self.driver.get(link)
         if "privacywall" in self.driver.current_url:
-            self.driver.find_element_by_css_selector(".js-privacywall-agree").click()
+            self.driver.find_element_by_css_selector(
+                ".js-privacywall-agree").click()
         print("Reached ", self.driver.current_url)
 
         # ID
         id = link[33:46]
+        # Sanity Check for duplicate
+        l = db.session.query(Article.id).all()
+        existing_ids = [item for sublist in l for item in sublist]
+        if id in existing_ids:
+            return
         # TITLE
-        title = self.driver.find_element_by_class_name("article-title").text
+        title = self.driver.find_element_by_class_name(
+            "article-title").text
         title = title.replace("'","''")
         # SCRAPE DATE
-        scrape_date = datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M")
+        #scrape_date = datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M")
+        scrape_date = datetime.now()
         # SUBTITLE
-        subtitle = self.driver.find_element_by_class_name("article-subtitle").text
+        subtitle = self.driver.find_element_by_class_name(
+            "article-subtitle").text
         subtitle = subtitle.replace("'","''")
         # PUB DATE
-        pub_date = self.driver.find_element_by_tag_name("time").get_attribute("datetime")[:-1]
+        pub_date = self.driver.find_element_by_tag_name(
+            "time").get_attribute("datetime")[:-1]
+        pub_date = datetime.strptime(pub_date,"%Y-%m-%dT%H:%M")
         # CATEGORIES
-        categories = self.driver.find_elements_by_xpath("//nav[@class='site-contextnavigation-breadcrumbs-nav']/a")
+        categories = self.driver.find_elements_by_xpath(
+            "//nav[@class='site-contextnavigation-breadcrumbs-nav']/a")
         cats = [cat.get_attribute("title") for cat in categories[1:]]
         cats = ", ".join(cats)
         # BODY
         body = []
         if "pro-und-kontra" in link:
-            article_body = self.driver.find_element_by_xpath("//div[@class='article-body']")
+            article_body = self.driver.find_element_by_xpath(
+                "//div[@class='article-body']")
             paragraphs = article_body.find_elements_by_tag_name("p")
             for paragraph in paragraphs:
                 body.append(paragraph.text)
         else:
-            paragraphs = self.driver.find_elements_by_xpath("//div[@class='article-body']/*")
+            paragraphs = self.driver.find_elements_by_xpath(
+                "//div[@class='article-body']/*")
             #print("Getting ps and h3s")
             for paragraph in paragraphs:
                 if paragraph.get_property("localName") in ("p", "h3"):
@@ -117,42 +118,44 @@ class Scraper:
                         "place_id": r.raw["place_id"]
                         }
                     br.append(place)
-        # PLACES ENTRIES
-        with cursor(self.cfg) as c:
-            # für jeden neuen Ort nen Eintrag im places table machen
-            query_string = """SELECT geonameid FROM places;"""
-            c.execute(query_string)
-            l = c.fetchall()
-            if l:
-                existing_ids = [item for sublist in l for item in sublist]
-
-            for place in br:
-                if place["place_id"] not in existing_ids:
-                    # make entry in places
-                    query_string = f"""INSERT INTO places (geonameid, place_name, lat, lon) VALUES ('{place["place_id"]}', '{place["word"]}', '{place["geo"].latitude}', '{place["geo"].longitude}');"""
-                    c.execute(query_string)
         # ARTICLE ENTRY
-        with cursor(self.cfg) as c:
-            query_string = f"""INSERT INTO articles (id, title, subtitle, link, cats, 
-                                    pub_date, scrape_date, body) 
-                            VALUES ('{id}','{title}','{subtitle}','{link}','{cats}',
-                                    '{pub_date}','{scrape_date}','{body}')"""
-            c.execute(query_string)
-            self.cnt += 1
-        # MENTIONS ENTRIES
-        with cursor(self.cfg) as c:
-            for place in br:
-                # make entry in mentions
-                query_string = f"""INSERT INTO mentions (article_id, place_id) VALUES ('{id}', '{place["place_id"]}')"""
-                c.execute(query_string)
+        article = Article(
+            id = id,
+            title = title,
+            subtitle = subtitle,
+            link = link,
+            cats = cats,
+            pub_date = pub_date,
+            scrape_date = scrape_date,
+            words = ",".join(ents),
+            body = body
+        )
 
+        # PLACES ENTRIES
+        # für jeden neuen Ort nen Eintrag im places table machen
+        l = db.session.query(Place.id).all()
+        existing_ids = [item for sublist in l for item in sublist]
 
+        for place in br:
+            if place["place_id"] not in existing_ids:
+                # make entry in places
+                place = Place(
+                    id = place["place_id"],
+                    word = place["word"],
+                    place_name = place["address"],
+                    lat = place["geo"].latitude,
+                    lon = place["geo"].longitude
+                )
+                article.places.append(place)
+        db.session.add(article)
+        db.session.commit()
 
     def scrape_for_links(self):
         # Scrape and Filter for new article Links
         self.driver.get(self.site)
         if "privacywall" in self.driver.current_url:
-            self.driver.find_element_by_css_selector(".js-privacywall-agree").click()
+            self.driver.find_element_by_css_selector(
+                ".js-privacywall-agree").click()
         print("Reached ", self.driver.current_url)
 
         results = self.driver.find_elements_by_tag_name("article")
@@ -170,16 +173,16 @@ class Scraper:
             link = str(r.find_element_by_tag_name("a").get_attribute("href"))
             links.append(link)
 
-        with cursor(self.cfg) as c:
-            c.execute("SELECT id FROM articles;")
-            l = c.fetchall()
+        l = db.session.query(Article.id).all()
         if l:
             existing_ids = [item for sublist in l for item in sublist]
             print(len(existing_ids), " articles already in DB")
             #print(existing_ids)
             links = [l for l in links if l[33:46] not in existing_ids]
             #print(links)
-        links = [l for l in links if not ("sudoku" in l or "kreuzwortraetsel" in l or "livebericht" in l)]
+        nonarticle = ["sudoku", "kreuzwortraetsel", "livebericht"]
+        nonarticle = any([n in l for n in nonarticle])
+        links = [l for l in links if not nonarticle]
         print(f"Found {len(links)} new articles")
         self.links = list(set(links))
         return True
