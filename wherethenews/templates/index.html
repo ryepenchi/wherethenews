@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="wherethenews App">
+  <meta name="author" content="ryepenchi">
+
+  <title>wherethenews</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+  <!-- Leaflet core CSS-->
+  <link rel="stylesheet" href="{{url_for('static', filename='leaflet/leaflet.css')}}">
+  <!-- custom CSS-->
+  <link rel="stylesheet" href="{{url_for('static', filename='demo.css')}}">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">wherethenews</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+      <div class="col-lg-12 text-center">
+        <div id="llmap"></div>
+        <div>
+            <select id="distsel">
+              {% for district in districts %}
+              <option value="{{district.id}}">{{district.name}}</option>
+              {% endfor %}
+            </select>
+        </div>    
+      </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{url_for('static', filename='jquery-2.2.2.min.js')}}"></script>
+  <script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='leaflet/leaflet.js')}}"></script>
+  <script src="{{url_for('static', filename='demo.js')}}"></script>
+
+</body>
+</html>
