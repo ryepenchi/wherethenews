@@ -2,13 +2,15 @@
 
 A Web-App showing places mentioned in the news on a map.
 
-Scraping news sites with **python** and **selenium**
+Scraping news sites (currently only derStandard.at) with **python** and **selenium**
 
 Geoparsing with external services using **geopy**
 
 Managing data with an SQLite database using **flask_sqlalchemy**
 
 Displaying results with **Flask / Leaflet.js**
+
+Try it: ryepenchi.gihub.io/wherethenews (Hopefully a live version)
 
 ### Ubuntu 20.04 Server Setup
 ```
@@ -23,6 +25,8 @@ sudo apt install chromium-browser chromium-chromedriver
 ```
 wget https://github.com/ryepenchi/wherethenews/archive/master.zip
 unzip master.zip && rm master.zip && mv wherethenews-master wherethenews && cd wherethenews
+# or
+git clone https://github.com/ryepenchi/wherethenews.git
 ```
 ### Virtual environment and Python packages
 ```
@@ -34,6 +38,10 @@ pip install -r requirements.txt
 ### Download a pre-trained model for the spacy NER
 ```
 python -m spacy download de_core_news_md
+```
+### Initialize the Database
+```
+python wherethenews/dbconfig.py
 ```
 ### Test the scraper
 ```

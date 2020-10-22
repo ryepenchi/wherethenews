@@ -40,4 +40,5 @@ class Place(db.Model):
     lat = db.Column(db.Float)
     lon = db.Column(db.Float)
 
-db.create_all()
+if __name__ == '__main__':
+    db.create_all()

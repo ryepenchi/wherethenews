@@ -7,14 +7,12 @@ Created on Thu Oct 15 09:03:14 2020
 """
 import sys, time
 from datetime import datetime
-#from random import shuffle
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
 import spacy
 from geopy.geocoders import Nominatim
-# import logging
 
 from utilities import log, args, sites
 from dbconfig import db, Article, Place
@@ -55,7 +53,7 @@ class Scraper:
         print("Reached ", self.driver.current_url)
 
         # ID
-        id = link[33:46]
+        id = int(link[33:46])
         # Sanity Check for duplicate
         l = db.session.query(Article.id).all()
         existing_ids = [item for sublist in l for item in sublist]
@@ -107,17 +105,22 @@ class Scraper:
         ents = set([ent.text for ent in doc.ents if ent.label_ == "LOC"])
 
         # GEOCODE
-        br = list()
+        br = []
+        uids = []
         for ent in ents:
             r = self.geolocator.geocode(ent)
+            # Conditions wheter new place was found, is new or relevat
             if r:
-                if r.raw["importance"] > 0.5:
+                c1 = r.raw["place_id"] not in uids
+                c2 = r.raw["importance"] > 0.5
+                if all((r, c1, c2)):
                     place = {"word": ent,
                         "address": r.raw["display_name"],
                         "geo": r.point,
                         "place_id": r.raw["place_id"]
                         }
                     br.append(place)
+
         # ARTICLE ENTRY
         article = Article(
             id = id,
@@ -149,6 +152,7 @@ class Scraper:
                 article.places.append(place)
         db.session.add(article)
         db.session.commit()
+        self.cnt += 1
 
     def scrape_for_links(self):
         # Scrape and Filter for new article Links
