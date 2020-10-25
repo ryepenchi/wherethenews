@@ -15,9 +15,12 @@ L.tileLayer(TILE_URL, {
 }).addTo(map);
 
 function renderData() {
+	if (from_date.toLocaleDateString() == to_date.toLocaleDateString()) {
+		document.getElementById("dates").innerText = from_date.toLocaleDateString();
+	} else {
+		document.getElementById("dates").innerText = from_date.toLocaleDateString() + " - " + to_date.toLocaleDateString();
+	}
 	var request = new XMLHttpRequest();
-	var from_date = new Date();
-	var to_date = new Date();
 	var fromrq = "from_date=" + from_date.toISOString();
 	var torq = "to_date=" + to_date.toISOString();
 	request.open('GET', '/points?' + fromrq + "&" + torq, true);
@@ -47,6 +50,10 @@ function renderData() {
 			layer = L.layerGroup(markers);
 			map.addLayer(layer);
 			// Create Cards
+			var myNode = document.getElementById("card-collection");
+			while (myNode.firstChild) {
+				myNode.removeChild(myNode.firstChild);
+			}
 			data.articles.map(function (arr) {
 				const span = document.createElement("span");
 				span.className = "card-title";
@@ -88,5 +95,53 @@ function renderData() {
 var layer = L.layerGroup();
 // renderData();
 window.onload = function () {
+	renderData();
+};
+
+var from_date = new Date();
+var to_date = new Date();
+
+// Date Buttons
+document.getElementById("m1d").onclick = function () {
+	if (from_date.toISOString() == to_date.toISOString()) {
+		from_date.setDate(from_date.getDate()-1);
+		to_date.setDate(to_date.getDate()-1);
+	} else {
+		from_date.setDate(from_date.getDate()-1);
+		to_date.setDate(to_date.getDate()-8);
+	}
+	renderData();
+};
+document.getElementById("p1d").onclick = function () {
+	if (from_date.toISOString() == to_date.toISOString()) {
+		from_date.setDate(from_date.getDate()+1);
+		to_date.setDate(to_date.getDate()+1);
+	} else {
+		from_date.setDate(from_date.getDate()+8);
+		to_date.setDate(to_date.getDate()+1);
+	}
+	renderData();
+};
+document.getElementById("m1w").onclick = function () {
+	if (from_date.toISOString() == to_date.toISOString()) {
+		from_date.setDate(from_date.getDate()-7);
+	} else {
+		from_date.setDate(from_date.getDate()-7);
+		to_date.setDate(to_date.getDate()-7);
+	}
+	renderData();
+};
+document.getElementById("p1w").onclick = function () {
+	if (from_date.toISOString() == to_date.toISOString()) {
+		to_date.setDate(to_date.getDate()+7);
+	} else {
+		from_date.setDate(from_date.getDate()+7);
+		to_date.setDate(to_date.getDate()+7);
+	}
+	renderData();
+};
+document.getElementById("today").onclick = function () {
+	from_date = new Date();
+	to_date = new Date();
 	renderData();
 };

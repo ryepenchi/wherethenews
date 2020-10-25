@@ -21,15 +21,17 @@ def index():
 def points():
     # defaults to today
     from_date = request.args.get("from_date", datetime.now())
+    print("Received from_date: ", from_date)
     from_date = dp.parse(from_date)
+    from_date = datetime(from_date.year, from_date.month, from_date.day, 0, 0, 0)
     to_date = request.args.get("to_date", datetime.now())
+    print("Receibed to_date: ", to_date)
     to_date = dp.parse(to_date)
-    print(from_date, to_date)
-    # points = Place.query.select_from(Place,Article).filter(from_date < Article.pub_date, Article.pub_date < to_date).all()
-    # Until Query works just get everything
-    points = Place.query.all()
-    articles = Article.query.all()
-    print(points)
+    to_date = datetime(to_date.year, to_date.month, to_date.day, 23, 59, 59)
+    print("Parsed dates: ", from_date, to_date)
+    points = Place.query.join(Place.articles).filter(from_date <= Article.pub_date, Article.pub_date <= to_date, Article.places != None).all()
+    articles = Article.query.filter(from_date <= Article.pub_date, Article.pub_date <= to_date, Article.places != None).all()
+    print("Found {} places and {} articles".format(len(points), len(articles)))
     p = []
     for point in points:
         links = [a.link for a in point.articles]
