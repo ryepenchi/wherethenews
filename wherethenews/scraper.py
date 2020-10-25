@@ -175,18 +175,18 @@ class Scraper:
         links = []
         for r in results:
             link = str(r.find_element_by_tag_name("a").get_attribute("href"))
-            links.append(link)
+            nonarticle = ["sudoku", "kreuzwortraetsel", "livebericht"]
+            nonarticle = any([n in link for n in nonarticle])
+            if not nonarticle:
+                links.append(link)
 
         l = db.session.query(Article.id).all()
         if l:
             existing_ids = [item for sublist in l for item in sublist]
             print(len(existing_ids), " articles already in DB")
-            #print(existing_ids)
-            links = [l for l in links if l[33:46] not in existing_ids]
-            #print(links)
-        nonarticle = ["sudoku", "kreuzwortraetsel", "livebericht"]
-        nonarticle = any([n in l for n in nonarticle])
-        links = [l for l in links if not nonarticle]
+            print(existing_ids)
+            links = [l for l in links if int(l[33:46]) not in existing_ids]
+            print(links)
         print(f"Found {len(links)} new articles")
         self.links = list(set(links))
         return True
