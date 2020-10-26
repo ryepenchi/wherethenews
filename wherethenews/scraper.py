@@ -115,6 +115,8 @@ class Scraper:
             try:
                 if type(dp.parse(ent)) == datetime:
                     continue
+            except Exception:
+                pass
             r = self.geolocator.geocode(ent)
             # Conditions whether new place was found, is new or relevat
             if r:
