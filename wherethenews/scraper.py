@@ -109,11 +109,12 @@ class Scraper:
         uids = []
         for ent in ents:
             r = self.geolocator.geocode(ent)
-            # Conditions wheter new place was found, is new or relevat
+            # Conditions whether new place was found, is new or relevat
             if r:
                 c1 = r.raw["place_id"] not in uids
                 c2 = r.raw["importance"] > 0.5
                 if all((r, c1, c2)):
+                    uids.append(r.raw["place_id"])
                     place = {"word": ent,
                         "address": r.raw["display_name"],
                         "geo": r.point,
