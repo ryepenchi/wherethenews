@@ -7,6 +7,7 @@ Created on Thu Oct 15 09:03:14 2020
 """
 import sys, time
 from datetime import datetime
+from dateutil import parser as dp
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
@@ -108,6 +109,12 @@ class Scraper:
         br = []
         uids = []
         for ent in ents:
+            # Get rid of single letter ents and date ents
+            if len(ent) < 3:
+                continue
+            try:
+                if type(dp.parse(ent)) == datetime:
+                    continue
             r = self.geolocator.geocode(ent)
             # Conditions whether new place was found, is new or relevat
             if r:
