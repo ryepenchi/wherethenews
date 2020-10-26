@@ -65,7 +65,6 @@ class Scraper:
             "article-title").text
         title = title.replace("'","''")
         # SCRAPE DATE
-        #scrape_date = datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M")
         scrape_date = datetime.now()
         # SUBTITLE
         subtitle = self.driver.find_element_by_class_name(
@@ -194,9 +193,9 @@ class Scraper:
         if l:
             existing_ids = [item for sublist in l for item in sublist]
             print(len(existing_ids), " articles already in DB")
-            print(existing_ids)
+            # print(existing_ids)
             links = [l for l in links if int(l[33:46]) not in existing_ids]
-            print(links)
+            # print(links)
         print(f"Found {len(links)} new articles")
         self.links = list(set(links))
         return True
@@ -219,7 +218,6 @@ if __name__ == "__main__":
             scraper.scrape_for_links()
             # Get 5 articles from derStandard by default
             links = scraper.links
-            for link in links[:6]:
+            for link in links[:5]:
                 scraper.scrape_article(link)
-            #s.test_dbconn()
     print("Scraped {} articles from {}".format(scraper.cnt, scraper.site))

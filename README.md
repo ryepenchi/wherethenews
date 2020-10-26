@@ -10,7 +10,7 @@ Managing data with an SQLite database using **flask_sqlalchemy**
 
 Displaying results with **Flask / Leaflet.js**
 
-Try it: ryepenchi.gihub.io/wherethenews (Hopefully a live version)
+**Try it:** [ryepenchi.gihub.io/wherethenews](https://ryepenchi.github.io/wherethenews) (Hopefully a live version)
 
 ### Ubuntu 20.04 Server Setup
 ```
@@ -52,6 +52,5 @@ python wherethenews/scraper.py
 todo
 ```
 ### Start Flask Server
-```
-todo
-```
+Followed the instructions at
+https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-20-04
