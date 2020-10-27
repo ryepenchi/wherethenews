@@ -12,7 +12,9 @@ def log(text):
     with open("scrapelog.txt", mode="a") as f:
         format = "%Y-%m-%dT%H:%M"
         dtnow = datetime.now().strftime(format)
-        print(dtnow, " >> ", text, file=f)
+        message = dtnow + " >> " + text
+        print(message, file=f)
+        print(message)
 
 # Argument parsing Setup
 parser = argparse.ArgumentParser()
