@@ -51,7 +51,7 @@ class Scraper:
         if "privacywall" in self.driver.current_url:
             self.driver.find_element_by_css_selector(
                 ".js-privacywall-agree").click()
-        log("Reached ", self.driver.current_url)
+        log("Reached " + self.driver.current_url)
 
         # ID
         id = int(link[33:46])
