@@ -6,10 +6,13 @@ Created on Thu Oct 15 09:03:14 2020
 @author: ryepenchi
 """
 import argparse
+from datetime import datetime
 
 def log(text):
     with open("scrapelog.txt", mode="a") as f:
-        print(text, file=f)
+        format = "%Y-%m-%dT%H:%M"
+        dtnow = datetime.now().strftime(format)
+        print(dtnow, " >> ", text, file=f)
 
 # Argument parsing Setup
 parser = argparse.ArgumentParser()

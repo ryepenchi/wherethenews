@@ -51,7 +51,7 @@ class Scraper:
         if "privacywall" in self.driver.current_url:
             self.driver.find_element_by_css_selector(
                 ".js-privacywall-agree").click()
-        print("Reached ", self.driver.current_url)
+        log("Reached ", self.driver.current_url)
 
         # ID
         id = int(link[33:46])
@@ -169,7 +169,7 @@ class Scraper:
         if "privacywall" in self.driver.current_url:
             self.driver.find_element_by_css_selector(
                 ".js-privacywall-agree").click()
-        print("Reached ", self.driver.current_url)
+        log("Reached ", self.driver.current_url)
 
         results = self.driver.find_elements_by_tag_name("article")
         tries = 0
@@ -192,15 +192,16 @@ class Scraper:
         l = db.session.query(Article.id).all()
         if l:
             existing_ids = [item for sublist in l for item in sublist]
-            print(len(existing_ids), " articles already in DB")
+            log(len(existing_ids), " articles already in DB")
             # print(existing_ids)
             links = [l for l in links if int(l[33:46]) not in existing_ids]
             # print(links)
-        print(f"Found {len(links)} new articles")
+        log(f"Found {len(links)} new articles")
         self.links = list(set(links))
         return True
 
 if __name__ == "__main__":
+    log("Scraper started")
     scraper = Scraper(args)
     with scraper:
         if args.all:
@@ -220,4 +221,4 @@ if __name__ == "__main__":
             links = scraper.links
             for link in links[:5]:
                 scraper.scrape_article(link)
-    print("Scraped {} articles from {}".format(scraper.cnt, scraper.site))
+    log("Scraped {} articles from {}".format(scraper.cnt, scraper.site))
