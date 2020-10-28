@@ -25,8 +25,10 @@ sudo apt install chromium-browser chromium-chromedriver
 ```
 wget https://github.com/ryepenchi/wherethenews/archive/master.zip
 unzip master.zip && rm master.zip && mv wherethenews-master wherethenews && cd wherethenews
-# or
-git clone https://github.com/ryepenchi/wherethenews.git
+```
+or if git is available
+```
+git clone https://github.com/ryepenchi/wherethenews.git && cd wherethenews
 ```
 ### Virtual environment and Python packages
 ```
@@ -49,7 +51,11 @@ python wherethenews/scraper.py
 ```
 ### Set up cron job to periodically run scraper
 ```
-todo
+crontab -e
+```
+and add (couldve made it less confusing by calling the subdirectory 'src')
+```
+20 * * * * /home/bright/wherethenews/bin/python wherethenews/wherethenews/scraper.py -a
 ```
 ### Start Flask Server
 Followed the instructions at
