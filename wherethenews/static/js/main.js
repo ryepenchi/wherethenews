@@ -92,58 +92,35 @@ function renderData() {
 	console.log("Lalalalalala")
 
 }
-var layer = L.layerGroup();
-// renderData();
-window.onload = function () {
-	renderData();
-};
 
-var today = new Date();
-var from_date = new Date(today.getFullYear(), today.getMonth(), today.getDate(),0,0);
-var to_date = new Date(today.getFullYear(), today.getMonth(), today.getDate(),23,59);
-
-// Date Buttons
-document.getElementById("m1d").onclick = function () {
-	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
-		from_date.setDate(from_date.getDate()-1);
-		to_date.setDate(to_date.getDate()-1);
-	} else {
-		from_date.setDate(from_date.getDate()-1);
-		to_date.setDate(to_date.getDate()-8);
-	}
-	renderData();
-};
-document.getElementById("p1d").onclick = function () {
-	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
-		from_date.setDate(from_date.getDate()+1);
-		to_date.setDate(to_date.getDate()+1);
-	} else {
-		from_date.setDate(from_date.getDate()+8);
-		to_date.setDate(to_date.getDate()+1);
-	}
-	renderData();
-};
-document.getElementById("m1w").onclick = function () {
-	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
-		from_date.setDate(from_date.getDate()-7);
-	} else {
-		from_date.setDate(from_date.getDate()-7);
-		to_date.setDate(to_date.getDate()-7);
-	}
-	renderData();
-};
-document.getElementById("p1w").onclick = function () {
-	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
-		to_date.setDate(to_date.getDate()+7);
-	} else {
-		from_date.setDate(from_date.getDate()+7);
-		to_date.setDate(to_date.getDate()+7);
-	}
-	renderData();
-};
-document.getElementById("today").onclick = function () {
+function setToToday() {
 	today = new Date();
 	from_date = new Date(today.getFullYear(), today.getMonth(), today.getDate(),0,0);
 	to_date = new Date(today.getFullYear(), today.getMonth(), today.getDate(),23,59);
+}
+
+var today, from_date, to_date;
+setToToday();
+var layer = L.layerGroup();
+window.onload = () => renderData();
+
+// Date Buttons
+function modDates(f1,t1,f2,t2) {
+	if (from_date.toLocaleDateString() == to_date.toLocaleDateString()) {
+		from_date.setDate(from_date.getDate()+f1);
+		to_date.setDate(to_date.getDate()+t1);
+	} else {
+		from_date.setDate(from_date.getDate()+f2);
+		to_date.setDate(to_date.getDate()+t2);
+	}
+	renderData();
+}
+
+document.getElementById("today").onclick = () => {
+	setToToday();
 	renderData();
 };
+document.getElementById("m1d").onclick = () => modDates(-1, -1, -1, -8);
+document.getElementById("p1d").onclick = () => modDates(1, 1, 8, 1);
+document.getElementById("m1w").onclick = () => modDates(-7, 0, -7, -7);
+document.getElementById("p1w").onclick = () => modDates(0, 7, 7, 7);
