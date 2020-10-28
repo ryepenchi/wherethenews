@@ -104,7 +104,7 @@ var to_date = new Date(today.getFullYear(), today.getMonth(), today.getDate(),23
 
 // Date Buttons
 document.getElementById("m1d").onclick = function () {
-	if (from_date.toISOString().slice(0,10) == to_date.toISOString().slice(0,10)) {
+	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
 		from_date.setDate(from_date.getDate()-1);
 		to_date.setDate(to_date.getDate()-1);
 	} else {
@@ -114,7 +114,7 @@ document.getElementById("m1d").onclick = function () {
 	renderData();
 };
 document.getElementById("p1d").onclick = function () {
-	if (from_date.toISOString().slice(0,10) == to_date.toISOString().slice(0,10)) {
+	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
 		from_date.setDate(from_date.getDate()+1);
 		to_date.setDate(to_date.getDate()+1);
 	} else {
@@ -124,7 +124,7 @@ document.getElementById("p1d").onclick = function () {
 	renderData();
 };
 document.getElementById("m1w").onclick = function () {
-	if (from_date.toISOString().slice(0,10) == to_date.toISOString().slice(0,10)) {
+	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
 		from_date.setDate(from_date.getDate()-7);
 	} else {
 		from_date.setDate(from_date.getDate()-7);
@@ -133,7 +133,7 @@ document.getElementById("m1w").onclick = function () {
 	renderData();
 };
 document.getElementById("p1w").onclick = function () {
-	if (from_date.toISOString().slice(0,10) == to_date.toISOString().slice(0,10)) {
+	if (from_date.toISOString().slice(0,10) === to_date.toISOString().slice(0,10)) {
 		to_date.setDate(to_date.getDate()+7);
 	} else {
 		from_date.setDate(from_date.getDate()+7);
