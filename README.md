@@ -26,7 +26,7 @@ sudo apt install chromium-browser chromium-chromedriver
 wget https://github.com/ryepenchi/wherethenews/archive/master.zip
 unzip master.zip && rm master.zip && mv wherethenews-master wherethenews && cd wherethenews
 ```
-or
+or if git is available
 ```
 git clone https://github.com/ryepenchi/wherethenews.git && cd wherethenews
 
