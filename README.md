@@ -49,7 +49,11 @@ python wherethenews/scraper.py
 ```
 ### Set up cron job to periodically run scraper
 ```
-todo
+crontab -e
+´´´
+and add (couldve made it less confusing by calling the subdirectory 'src')
+´´´
+20 * * * * /home/bright/wherethenews/bin/python wherethenews/wherethenews/scraper.py -a
 ```
 ### Start Flask Server
 Followed the instructions at
