@@ -29,7 +29,6 @@ unzip master.zip && rm master.zip && mv wherethenews-master wherethenews && cd w
 or if git is available
 ```
 git clone https://github.com/ryepenchi/wherethenews.git && cd wherethenews
-
 ```
 ### Virtual environment and Python packages
 ```
