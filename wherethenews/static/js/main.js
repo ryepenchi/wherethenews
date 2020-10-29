@@ -33,17 +33,36 @@ function renderData() {
 			var markers = data.points.map(function(arr) {
 				const t = document.createElement("b");
 				t.innerHTML = arr.word + "<br>";
-				const links = arr.links.map(function (l) {
-					//<a href='{a.link}' target='_blank' class='truncate'>{a.title}...</a><br>
-					const a = document.createElement("a");
-					a.href = l;
-					a.className = "truncate";
-					a.innerText = l;
-					a.target = "_blank";
-					const b = document.createElement("br");
-					a.append(b);
-					t.append(a);
-				});
+				const a = document.createElement("a");
+				a.innerHTML = "Article"
+				a.onclick = () => {
+					var myChildren = [];
+					console.log(arr.aids);
+					for (const id of arr.aids) {
+						myChildren.push(document.getElementById(id));
+					}
+					var myNode = document.getElementById("card-collection");
+					while (myNode.firstChild) {
+						if (!arr.aids.includes(myNode.firstChild.id)) {
+							myNode.removeChild(myNode.firstChild);
+						}
+					}
+					for (const c of myChildren) {
+						myNode.append(c)
+					}
+				};
+				a.style = "cursor: pointer;"
+				t.append(a);
+				// const links = arr.links.map(function (l) {
+				// 	const a = document.createElement("a");
+				// 	a.href = l;
+				// 	a.className = "truncate";
+				// 	a.innerText = l;
+				// 	a.target = "_blank";
+				// 	const b = document.createElement("br");
+				// 	a.append(b);
+				// 	t.append(a);
+				// });
 				return L.marker([arr.lat, arr.lon]).bindPopup(t);
 			});
 			map.removeLayer(layer);
@@ -65,18 +84,22 @@ function renderData() {
 				d.className = "card-content white-text";
 				d.appendChild(span);
 				d.appendChild(para);
-				// const diva = document.createElement("div");
-				// diva.className = "card-action";
-				// diva.innerHTML = arr.link;
-				const card = document.createElement("div")
-				card.className = "card blue-grey lighten-1 collection-item"
+				const diva = document.createElement("div");
+				diva.className = "card-action";
+				const l = document.createElement("a");
+				l.href = arr.link;
+				l.innerText = "Article"
+				l.target = "_blank";
+				diva.appendChild(l);
+				const card = document.createElement("div");
+				card.id = arr.id;
+				card.onclick = () => renderArticlePlaces(arr.points);
+				card.style = "cursor: pointer;"
+				card.className = "card blue-grey lighten-1 collection-item";
 				card.appendChild(d);
-				// card.appendChild(diva);
+				card.appendChild(diva);
 				const cardlink = document.createElement("a");
-				cardlink.href = arr.link;
-				cardlink.target = "_blank";
-				cardlink.appendChild(card);
-				document.getElementById("card-collection").appendChild(cardlink);
+				document.getElementById("card-collection").appendChild(card);
 			});
 		} else {
 			//Reached target Server, but it returned an error
@@ -91,6 +114,17 @@ function renderData() {
 	request.send();
 	console.log("Lalalalalala")
 
+}
+
+function renderArticlePlaces(arr) {
+	var markers = arr.map(function(arr) {
+		const ptext = document.createElement("b");
+		ptext.innerHTML = arr.word;
+		return L.marker([arr.lat, arr.lon]).bindPopup(ptext);
+	});
+	map.removeLayer(layer);
+	layer = L.layerGroup(markers);
+	map.addLayer(layer);
 }
 
 function setToToday() {
