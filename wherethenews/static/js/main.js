@@ -21,8 +21,8 @@ function renderData() {
 		document.getElementById("dates").innerText = from_date.toLocaleDateString() + " - " + to_date.toLocaleDateString();
 	}
 	var request = new XMLHttpRequest();
-	var fromrq = "from_date=" + from_date.toISOString();
-	var torq = "to_date=" + to_date.toISOString();
+	var fromrq = "from_date=" + from_date.toLocaleString();
+	var torq = "to_date=" + to_date.toLocaleString();
 	request.open('GET', '/points?' + fromrq + "&" + torq, true);
 
 	request.onload = function() {
