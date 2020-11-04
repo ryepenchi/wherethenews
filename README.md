@@ -43,20 +43,21 @@ python -m spacy download de_core_news_md
 ```
 ### Initialize the Database
 ```
-python wherethenews/dbconfig.py
+python src/dbconfig.py
 ```
 ### Test the scraper
 ```
-python wherethenews/scraper.py
+python src/scraper.py
 ```
 ### Set up cron job to periodically run scraper
 ```
 crontab -e
 ```
-and add (couldve made it less confusing by calling the subdirectory 'src')
+and add
 ```
-20 * * * * /home/bright/wherethenews/bin/python wherethenews/wherethenews/scraper.py -a
+20 * * * * /home/bright/wherethenews/bin/python wherethenews/src/scraper.py -a
 ```
 ### Start Flask Server
 Followed the instructions at
+
 https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-20-04
