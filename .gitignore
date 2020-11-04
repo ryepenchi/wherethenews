@@ -1,4 +1,12 @@
-config.py
+dbconfig.py
 *.pyc
 *.db
 scrapelog.txt
+bin/
+include/
+lib/
+lib64/
+share/
+pyvenv.cfg
+wherethenews.ini
+wsgi.py
