@@ -102,7 +102,10 @@ class Scraper:
 
         # NLP
         doc = self.nlp(body)
-        ents = set([ent.text for ent in doc.ents if ent.label_ == "LOC"])
+        # Select Entities which are either
+        # GPE: Countries, cities, states OR
+        # LOC: Non-GPE locations, mountain-ranges, bodies of water
+        ents = set([ent.text for ent in doc.ents if ent.label_ in ["LOC", "GPE"]])
 
         # GEOCODE
         br = []
