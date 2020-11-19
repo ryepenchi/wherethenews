@@ -86,19 +86,144 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-   #llmap {
-     /* height: inherit; */
-     /* width: inherit; */
-    height: 83vh;
-    /* width: 50vw; */
-    margin: auto;
-    /* top: 25vh; */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+#map {
+  width: 600px;
+  height: 400px;
+  /* top: 5%;  */
+}
+body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }
+
+   
+  #llmap {
+    /* height: inherit; */
+    /* width: inherit; */
+  height: 83vh;
+  /* width: 50vw; */
+  margin: auto;
+  /* top: 25vh; */
   }
+
   .btn-large {
     width: 48%;
   }
   #today.btn-large {
     width: 97%;
+  }
+  /* body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  } */
+  
+  .nav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    opacity: 0.9;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.7s;
+  }
+  .rightnav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    opacity: 0.9;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.7s;
+  }
+
+  
+  .nav a {
+    /* display: block; */
+    padding: 0px 20px;
+    text-decoration: none;
+    color: #ccc;
+    font-size: 25px;
+  }
+  .nav a:hover {
+    color: #fff;
+    tansition: 0.4s;
+  }
+  .nav div {
+    display: block;
+    text-align: center;
+  }
+  
+  #today {
+    background-color: #fff;
+    color: #111;
+    opacity: 0.9;
+    border-radius: 4px;
+  }
+  #today:hover {
+    color: #999;
+  }
+
+  .nav .close {
+    position: absolute;
+    bottom: 66px;
+    right: 22px;
+    margin-left: 50px;
+    font-size: 30px;
+  }
+  
+  .rightnav a {
+    display: block;
+    padding: 20px 30px;
+    text-decoration: none;
+    color: #ccc;
+    font-size: 25px;
+  }
+  .rightnav a:hover {
+    color: #fff;
+    tansition: 0.4s;
+  }
+  
+  .rightnav .close {
+    position: absolute;
+    bottom: 66px;
+    right: 22px;
+    margin-left: 50px;
+    font-size: 30px;
+  }
+
+  .slide a {
+    color: darkgrey;
+    color: rgba(100,100,100,1);
+    font-size: 28px;
+  }
+
+  .filter,
+  .article-list,
+  .ctl {
+    padding: 8px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+  .title {
+    padding: 2px 10px 2px 10px;
+  }
+
+  #card-collection {
+    overflow: auto;
+    height: 83vh;
   }
 /* ==========================================================================
    Helper classes
