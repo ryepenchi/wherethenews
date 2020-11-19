@@ -1,5 +1,8 @@
 
-var map = L.map('llmap').setView([48.517587, 8.648699], 5);
+// Leaflet Construction
+var map = L.map('map', {
+    attributionControl: false
+}).setView([48.517587, 8.648699], 5);
 
 // var TILE_URL = "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWhvcm5zaXJ1cCIsImEiOiJjazNqNTBxeHgwM2trM2RydnozbDdwMXMwIn0.0xe5TIh6XSo1pKrjsAUgEA";
 var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -14,6 +17,55 @@ L.tileLayer(TILE_URL, {
 	// zoomOffset: -1
 }).addTo(map);
 
+var article_list = L.control({position: 'bottomright'});
+article_list.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'ctl article-list');
+    this._div.innerHTML = '<span class="slide"><a href="#" onClick="openRightMenu()"><i class="far fa-newspaper"></i></a></span>';
+    // this.update();
+    return this._div;
+}
+article_list.addTo(map);
+
+var title = L.control({position: 'topright'});
+title.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'ctl title');
+    this._div.innerHTML = '<h2>Places in the News</h2>';
+    // this.update();
+    return this._div;
+}
+title.addTo(map);
+
+var dates = L.control({position: 'topleft'});
+dates.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'ctl dates');
+    this._div.innerHTML = '<h4 id="dates"></h4>';
+    // this.update();
+    return this._div;
+}
+dates.addTo(map);
+
+var filter = L.control({position: 'bottomright'});
+filter.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'ctl filter');
+    this._div.innerHTML = '<span class="slide"><a href="#" onClick="openSlideMenu()"><i class="fas fa-filter"></i></a></span>';
+    // this.update();
+    return this._div;
+}
+filter.addTo(map);
+L.control.attribution({
+    position: "bottomleft"
+}).addTo(map);
+
+var repo = L.control({position: 'bottomleft'});
+repo.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'ctl repo-link');
+    this._div.innerHTML = '<span class="slide"><a href="https://github.com/ryepenchi/wherethenews" target="_blank"><i class="fab fa-github"></i></a></span>';
+    // this.update();
+    return this._div;
+}
+repo.addTo(map);
+
+// Control Logic
 function renderData() {
 	if (from_date.toLocaleDateString() == to_date.toLocaleDateString()) {
 		document.getElementById("dates").innerText = from_date.toLocaleDateString();
@@ -158,3 +210,22 @@ document.getElementById("m1d").onclick = () => modDates(-1, -1, -1, -8);
 document.getElementById("p1d").onclick = () => modDates(1, 1, 8, 1);
 document.getElementById("m1w").onclick = () => modDates(-7, 0, -7, -7);
 document.getElementById("p1w").onclick = () => modDates(0, 7, 7, 7);
+
+function openSlideMenu () {
+    document.getElementById('menu').style.width = '300px';
+    // document.getElementById('content').style.marginLeft = '250px';
+  }
+  
+  function closeSlideMenu () {
+    document.getElementById('menu').style.width = '0';
+    // document.getElementById('content').style.marginLeft = '0';
+  }
+function openRightMenu () {
+document.getElementById('rightmenu').style.width = '300px';
+// document.getElementById('content').style.marginLeft = '250px';
+}
+
+function closeRightMenu () {
+document.getElementById('rightmenu').style.width = '0';
+// document.getElementById('content').style.marginLeft = '0';
+}
