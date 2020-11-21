@@ -16,46 +16,51 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 
 </head>
 <body>
 
-    <div class="left-panel">
-        <div id="menu" class="nav">
-            <a href="#" class="close" onClick="closeSlideMenu()">
-            <i class="fas fa-times"></i>
-            </a>
-            <div>
-                <a id="today" class="btn">Today</a>
-            </div>
-            <div>
-                <a id="m1d"><i class="fas fa-minus-square"></i></a>
-                <a>Day</a>
-                <a id="p1d"><i class="fas fa-plus-square"></i></a>
-            </div>
-            <div>
-                <a id="m1w"><i class="fas fa-minus-square"></i></a>
-                <a>Week</a>
-                <a id="p1w"><i class="fas fa-plus-square"></i></a>
-            </div>
+    <div id="menu" class="nav">
+        <a href="#" class="close" onClick="closeSlideMenu()">
+        <i class="fas fa-times"></i>
+        </a>
+        <div>
+            <h2 id="dates"></h2>
+        </div>
+        <div class="flex-container">
+            <a id="today" class="btn">Today</a>
+        </div>
+        <div class="flex-container">
+            <a id="m1d"><i class="fas fa-minus-square"></i></a>
+            <a>Day</a>
+            <a id="p1d"><i class="fas fa-plus-square"></i></a>
+        </div>
+        <div class="flex-container">
+            <a id="m1w"><i class="fas fa-minus-square"></i></a>
+            <a>Week</a>
+            <a id="p1w"><i class="fas fa-plus-square"></i></a>
         </div>
     </div>
 
-<div id='map'></div>
+    <div id='map'></div>
 
-<div class="right-panel">
     <div id="rightmenu" class="rightnav">
-        <a href="#" class="close" onClick="closeRightMenu()">
-        <i class="fas fa-times"></i>
-        </a>
         <div id="card-collection"></div>
+        <div id="rightcontrols">
+            <a href="#" class="close" onClick="closeRightMenu()">
+                <i class="fas fa-times"></i>
+            </a>    
+            <!-- <a href="#" class="reload" onClick="reloadData()">
+                <i class="fas fa-sync-alt"></i>
+            </a>     -->
+        </div>
     </div>
-</div>
 
-<script src="{{url_for('static', filename='js/main.js')}}"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
 </body>
 </html>
