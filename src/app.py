@@ -53,6 +53,7 @@ def points():
             "title":article.title, 
             "words":words, 
             "link":article.link,
+            "pubdate":article.pub_date.strftime("%a, %d %b %Y"),
             "points": [{
                 "word":point.word, 
                 "links":[{"link":a.link, "title":a.title} for a in point.articles], 
